@@ -86,7 +86,7 @@ services:
       - ai
   image-planner:
     build:
-      context: ./services/image-planner
+      context: ./mcp/image-planner
     container_name: image-planner
     ports:
       - "8200:8200"
