@@ -1,7 +1,7 @@
 {
   "2": {
     "inputs": {
-      "text": "sharp focus,\nhigh detail,\nrealistic skin texture,\nnatural lighting,\nprofessional DSLR photo,\nRAW photo,\nfine details,\nsharp eyes",
+      "text": "a realistic photo,\nnatural skin texture,\nvisible pores,\nsubtle imperfections,\nrealistic color grading,\nnatural skin texture,\nvisible pores,\nfine wrinkles,\nsubtle skin imperfections\n",
       "clip": [
         "10",
         1
@@ -14,7 +14,7 @@
   },
   "3": {
     "inputs": {
-      "text": "film grain,\nnoise,\njpeg artifacts,\nblurry,\nsoft focus,\nout of focus,\nlow detail,\nlow quality",
+      "text": "",
       "clip": [
         "10",
         1
@@ -27,7 +27,7 @@
   },
   "4": {
     "inputs": {
-      "width": 512,
+      "width": 832,
       "height": 512,
       "batch_size": 1
     },
@@ -39,10 +39,10 @@
   "5": {
     "inputs": {
       "seed": 750150152880550,
-      "steps": 30,
-      "cfg": 8,
-      "sampler_name": "dpmpp_2m_cfg_pp",
-      "scheduler": "simple",
+      "steps": 35,
+      "cfg": 6,
+      "sampler_name": "dpmpp_3m_sde",
+      "scheduler": "karras",
       "denoise": 1,
       "model": [
         "10",
@@ -110,11 +110,11 @@
       "guide_size_for": true,
       "max_size": 1024,
       "seed": 403986823046620,
-      "steps": 20,
-      "cfg": 8,
-      "sampler_name": "euler",
-      "scheduler": "simple",
-      "denoise": 0.5,
+      "steps": 10,
+      "cfg": 4.5,
+      "sampler_name": "dpmpp_3m_sde",
+      "scheduler": "karras",
+      "denoise": 0.3,
       "feather": 5,
       "noise_mask": true,
       "force_inpaint": true,
