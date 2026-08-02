@@ -55,12 +55,8 @@ services:
     environment:
       - COMFYUI_HOST=comfyui
       - COMFYUI_PORT=8188
-      - WORKFLOW_NAME=V2.0
       - WORKFLOW_DIR=/workflows
-      - POSITIVE_PROMPT_NODE=2
-      - OUTPUT_NODE=7
       - OUTPUT_PREFIX=mcp
-      - SAMPLER_NODES=5,8
     volumes:
       - ./comfy/workflow-api:/workflows:ro
     depends_on:

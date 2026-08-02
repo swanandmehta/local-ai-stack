@@ -1,20 +1,17 @@
 from mcp.server.fastmcp import FastMCP
 from comfy_client import generate_image as comfy_generate
+from model.plan import ImagePlan
 
-mcp = FastMCP(
-    "comfy-mcp",
-    host="0.0.0.0",
-    port=8000
-)
+mcp = FastMCP("comfy-mcp", host="0.0.0.0", port=8000)
+
 
 @mcp.tool(
     name="generate_image",
-    description="Generate an image using ComfyUI from a text prompt."
+    description="Generate an image using ComfyUI from an image execution plan.",
 )
-def generate_image(prompt: str) -> dict:
-    return comfy_generate(prompt)
+def generate_image(image_plan: ImagePlan) -> dict:
+    return comfy_generate(image_plan)
+
 
 if __name__ == "__main__":
-    mcp.run(
-        transport="streamable-http"
-    )
+    mcp.run(transport="streamable-http")

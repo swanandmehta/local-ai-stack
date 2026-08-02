@@ -1,0 +1,25 @@
+workflows:
+  V2:
+    file: V2.0.json
+    positive_prompt_node: 2
+    negative_prompt_node: 3
+    sampler_nodes:
+      - 5
+      - 8
+    output_node: 7
+    defaults:
+      steps: 30
+      cfg: 7
+      scheduler: normal
+
+  V3:
+    file: V3.0.json
+    positive_prompt_node: 2
+    negative_prompt_node: 3
+    sampler_nodes:
+      - 5
+    output_node: 7
+    defaults:
+      steps: 35
+      cfg: 6
+      scheduler: normal
