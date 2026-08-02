@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "image-planner-mcp": {
+      "type": "streamable-http",
+      "url": "http://image-planner-mcp:8200/mcp/"
+    },
+    "comfy-mcp": {
+      "type": "streamable-http",
+      "url": "http://comfy-mcp:8000/mcp/"
+    }
+  }
+}

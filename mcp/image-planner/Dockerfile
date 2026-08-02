@@ -12,4 +12,4 @@ COPY model ./model
 
 EXPOSE 8200
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8200"]
+CMD ["python", "app.py"]

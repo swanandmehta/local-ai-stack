@@ -65,6 +65,21 @@ services:
     networks:
       - ai
 
+  image-planner-mcp:
+    build:
+      context: ./mcp/image-planner
+    container_name: image-planner-mcp
+    ports:
+      - "8200:8200"
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - PLANNER_MODEL=huihui_ai/qwen2.5-abliterate:7b-instruct
+    depends_on:
+      - ollama
+    restart: unless-stopped
+    networks:
+      - ai
+
   mcpo:
     image: ghcr.io/open-webui/mcpo:main
     container_name: mcpo
@@ -73,28 +88,15 @@ services:
       - 0.0.0.0
       - --port
       - "8001"
-      - --server-type
-      - streamable-http
-      - --
-      - http://comfy-mcp:8000/mcp/
+      - --config
+      - /config/mcp.json
+    volumes:
+      - ./mcpo/config/mcp.json:/config/mcp.json:ro
     ports:
       - "8001:8001"
     depends_on:
       - comfy-mcp
-    restart: unless-stopped
-    networks:
-      - ai
-  image-planner:
-    build:
-      context: ./mcp/image-planner
-    container_name: image-planner
-    ports:
-      - "8200:8200"
-    environment:
-      - OLLAMA_URL=http://ollama:11434
-      - PLANNER_MODEL=huihui_ai/qwen2.5-abliterate:7b-instruct
-    depends_on:
-      - ollama
+      - image-planner-mcp
     restart: unless-stopped
     networks:
       - ai

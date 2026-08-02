@@ -6,10 +6,8 @@ import requests
 import time
 from model.request import ImageRequest
 from model.plan import ImagePlan
+from mcp.server.fastmcp import FastMCP
 
-from fastapi import FastAPI
-
-app = FastAPI()
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama:11434")
 
@@ -68,9 +66,29 @@ def ask_ollama(user_prompt: str):
 
     return json.loads(data["response"])
 
+def startup_event():
+    global MODELS
+    global STYLES
+    global SYSTEM_TEMPLATE
+    
+    MODELS = load_yaml("models.yaml")
+    STYLES = load_yaml("styles.yaml")
+    SYSTEM_TEMPLATE = load_prompt()
+    logger.info("Planner model: %s", PLANNER_MODEL)
 
-@app.post("/plan-image")
-def plan_image(request: ImageRequest):
+mcp = FastMCP(
+    "image-planner",
+    host="0.0.0.0",
+    port=8200
+)
+
+startup_event()
+
+@mcp.tool(
+    name="create_image_plan",
+    description="Analyze a user image request and produce an execution plan. This must be called before generate_image."
+)
+def create_image_plan(request: ImageRequest):
     logger.info("Image request: %s", request.prompt)
 
     result = ask_ollama(request.prompt)
@@ -82,11 +100,5 @@ def plan_image(request: ImageRequest):
     return plan
 
 
-@app.on_event("startup")
-def startup_event():
-    logger.info("Planner model: %s", PLANNER_MODEL)
-
-
-MODELS = load_yaml("models.yaml")
-STYLES = load_yaml("styles.yaml")
-SYSTEM_TEMPLATE = load_prompt()
+if __name__ == "__main__":
+    mcp.run(transport="streamable-http")
