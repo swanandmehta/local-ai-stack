@@ -1,0 +1,34 @@
+styles:
+
+  cinematic:
+    description:
+      "Movie-like visual style"
+    positive:
+      - cinematic lighting
+      - dramatic composition
+      - volumetric lighting
+    negative:
+      - flat lighting
+      - low contrast
+
+  realistic:
+    description:
+      "Photographic realism"
+    positive:
+      - DSLR photography
+      - natural lighting
+      - realistic textures
+    negative:
+      - illustration
+      - painting
+
+  fantasy:
+    description:
+      "Fantasy artwork"
+    positive:
+      - epic fantasy
+      - magical atmosphere
+      - detailed environment
+    negative:
+      - modern objects
+      - realistic photography

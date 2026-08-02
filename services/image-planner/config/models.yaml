@@ -1,0 +1,52 @@
+models:
+  dreamshaper_v2:
+    display_name: "DreamShaper 8"
+    checkpoint:
+      "DreamShaper_8_pruned.safetensors"
+    workflow:
+      "V2"
+    strengths:
+      - fantasy
+      - illustration
+      - concept art
+      - cinematic scenes
+      - stylized characters
+    weaknesses:
+      - photorealistic portraits
+      - product photography
+    recommended_styles:
+      - fantasy
+      - cinematic
+      - artistic
+    default_negative_prompt:
+      - photo
+      - realistic skin
+      - blurry
+      - low quality
+
+  realistic_vision_v3:
+    display_name: "Realistic Vision V5.1"
+    checkpoint:
+      "Realistic_Vision_V5.1.safetensors"
+    workflow:
+      "V3"
+    strengths:
+      - realistic portraits
+      - photography
+      - products
+      - architecture
+      - real environments
+    weaknesses:
+      - anime
+      - illustration
+      - painterly styles
+    recommended_styles:
+      - realistic
+      - cinematic
+      - portrait
+    default_negative_prompt:
+      - cartoon
+      - anime
+      - painting
+      - distorted face
+      - bad anatomy

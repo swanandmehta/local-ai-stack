@@ -1,7 +1,7 @@
 services:
   ollama:
     image: ollama/ollama:latest
-    container_name: ai-ollama
+    container_name: ollama
     ports:
       - "11434:11434"
     volumes:
@@ -55,12 +55,12 @@ services:
     environment:
       - COMFYUI_HOST=comfyui
       - COMFYUI_PORT=8188
-      - WORKFLOW_NAME=V3.0
+      - WORKFLOW_NAME=V2.0
       - WORKFLOW_DIR=/workflows
       - POSITIVE_PROMPT_NODE=2
       - OUTPUT_NODE=7
       - OUTPUT_PREFIX=mcp
-      - SAMPLER_NODES=5
+      - SAMPLER_NODES=5,8
     volumes:
       - ./comfy/workflow-api:/workflows:ro
     depends_on:
@@ -85,6 +85,21 @@ services:
       - "8001:8001"
     depends_on:
       - comfy-mcp
+    restart: unless-stopped
+    networks:
+      - ai
+  image-planner:
+    build:
+      context: ./services/image-planner
+    container_name: image-planner
+    ports:
+      - "8200:8200"
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - CONFIG_DIR=/config
+      - PLANNER_MODEL=qwen2.5:7b
+    depends_on:
+      - ollama
     restart: unless-stopped
     networks:
       - ai
