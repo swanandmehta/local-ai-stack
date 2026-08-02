@@ -96,8 +96,7 @@ services:
       - "8200:8200"
     environment:
       - OLLAMA_URL=http://ollama:11434
-      - CONFIG_DIR=/config
-      - PLANNER_MODEL=qwen2.5:7b
+      - PLANNER_MODEL=huihui_ai/qwen2.5-abliterate:7b-instruct
     depends_on:
       - ollama
     restart: unless-stopped

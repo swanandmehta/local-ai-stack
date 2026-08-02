@@ -3,6 +3,7 @@ import json
 import yaml
 import logging
 import requests
+import time
 from model.request import ImageRequest
 
 from fastapi import FastAPI
@@ -34,11 +35,6 @@ logger = logging.getLogger(
     "image-planner"
 )
 
-logger.info(
-    "Planner model: %s",
-    PLANNER_MODEL
-)
-
 def load_yaml(filename):
     path = os.path.join(
         CONFIG_DIR,
@@ -58,11 +54,6 @@ def load_prompt():
         return f.read()
 
 def create_system_prompt(user_prompt):
-    
-    MODELS = load_yaml("models.yaml")
-    STYLES = load_yaml("styles.yaml")
-    SYSTEM_TEMPLATE = load_prompt()
-
     return SYSTEM_TEMPLATE.format(
         MODELS=yaml.dump(MODELS),
         STYLES=yaml.dump(STYLES),
@@ -85,18 +76,28 @@ def ask_ollama(user_prompt: str):
         "Calling Ollama model=%s",
         PLANNER_MODEL
     )
+    
+    start = time.time()
 
     response = requests.post(
         f"{OLLAMA_URL}/api/generate",
         json=payload,
         timeout=120
     )
+    
+    try:
+        response.raise_for_status()
+    except requests.RequestException as e:
+        logger.exception(
+            "Ollama request failed"
+        )
+        raise e
 
-    response.raise_for_status()
     data = response.json()
 
     logger.info(
-        "Ollama response received"
+        "Ollama completed in %.2fs",
+        time.time() - start
     )
 
     return json.loads(
@@ -121,3 +122,14 @@ def plan_image(request: ImageRequest):
     )
 
     return result
+
+@app.on_event("startup")
+def startup_event():
+    logger.info(
+        "Planner model: %s",
+        PLANNER_MODEL
+    )
+    
+MODELS = load_yaml("models.yaml")
+STYLES = load_yaml("styles.yaml")
+SYSTEM_TEMPLATE = load_prompt()

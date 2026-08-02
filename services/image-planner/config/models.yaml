@@ -1,10 +1,8 @@
 models:
   dreamshaper_v2:
     display_name: "DreamShaper 8"
-    checkpoint:
-      "DreamShaper_8_pruned.safetensors"
-    workflow:
-      "V2"
+    checkpoint: "DreamShaper_8_pruned.safetensors"
+    workflow: "V2"
     strengths:
       - fantasy
       - illustration
@@ -14,7 +12,7 @@ models:
     weaknesses:
       - photorealistic portraits
       - product photography
-    recommended_styles:
+    styles:
       - fantasy
       - cinematic
       - artistic
@@ -26,10 +24,8 @@ models:
 
   realistic_vision_v3:
     display_name: "Realistic Vision V5.1"
-    checkpoint:
-      "Realistic_Vision_V5.1.safetensors"
-    workflow:
-      "V3"
+    checkpoint: "Realistic_Vision_V5.1.safetensors"
+    workflow: "V3"
     strengths:
       - realistic portraits
       - photography
@@ -40,7 +36,7 @@ models:
       - anime
       - illustration
       - painterly styles
-    recommended_styles:
+    styles:
       - realistic
       - cinematic
       - portrait
