@@ -1,0 +1,2 @@
+requests
+mcp==1.9.4

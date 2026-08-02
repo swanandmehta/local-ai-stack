@@ -1,0 +1,7 @@
+ollama/**
+open-webui/**
+comfy/models/**
+comfy/input/**
+comfy/output/**
+comfy/custom_nodes/**
+comfy/user/**

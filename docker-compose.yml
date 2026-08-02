@@ -1,0 +1,93 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ai-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama/models:/root/.ollama
+    restart: unless-stopped
+    gpus: all
+    cpus: 12
+    mem_limit: 24g
+    networks:
+      - ai
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.11.0
+    container_name: open-webui
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./open-webui/data:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    depends_on:
+      - ollama
+    restart: unless-stopped
+    networks:
+      - ai
+  comfyui:
+    image: yanwk/comfyui-boot:cu126-slim
+    container_name: comfyui
+    ports:
+      - "8188:8188"
+    volumes:
+      - ./comfy/models:/root/ComfyUI/models
+      - ./comfy/input:/root/ComfyUI/input
+      - ./comfy/output:/root/ComfyUI/output
+      - ./comfy/custom_nodes:/root/ComfyUI/custom_nodes
+      - ./comfy/user:/root/ComfyUI/user
+      - ./comfy/workflows:/root/ComfyUI/user/default/workflows
+    environment:
+      - CLI_ARGS=--listen 0.0.0.0
+    restart: unless-stopped
+    gpus: all
+    cpus: 12
+    mem_limit: 24g
+    networks:
+      - ai
+  comfy-mcp:
+    build:
+      context: ./mcp/comfy
+    container_name: comfy-mcp
+    ports:
+      - "8000:8000"
+    environment:
+      - COMFYUI_HOST=comfyui
+      - COMFYUI_PORT=8188
+      - WORKFLOW_NAME=V3.0
+      - WORKFLOW_DIR=/workflows
+      - POSITIVE_PROMPT_NODE=2
+      - OUTPUT_NODE=7
+      - OUTPUT_PREFIX=mcp
+      - SAMPLER_NODES=5
+    volumes:
+      - ./comfy/workflow-api:/workflows:ro
+    depends_on:
+      - comfyui
+    restart: unless-stopped
+    networks:
+      - ai
+
+  mcpo:
+    image: ghcr.io/open-webui/mcpo:main
+    container_name: mcpo
+    command:
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8001"
+      - --server-type
+      - streamable-http
+      - --
+      - http://comfy-mcp:8000/mcp/
+    ports:
+      - "8001:8001"
+    depends_on:
+      - comfy-mcp
+    restart: unless-stopped
+    networks:
+      - ai
+
+networks:
+  ai:
