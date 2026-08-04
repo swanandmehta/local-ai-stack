@@ -4,12 +4,12 @@ services:
     container_name: ollama
     ports:
       - "11434:11434"
+    environment:
+      - OLLAMA_KEEP_ALIVE=2m
     volumes:
       - ./ollama/models:/root/.ollama
     restart: unless-stopped
     gpus: all
-    cpus: 12
-    mem_limit: 12g
     networks:
       - ai
 
@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
     networks:
       - ai
-      
+
   comfyui:
     image: yanwk/comfyui-boot:cu126-slim
     container_name: comfyui
@@ -44,8 +44,6 @@ services:
       - CLI_ARGS=--listen 0.0.0.0 --lowvram --cpu-vae
     restart: unless-stopped
     gpus: all
-    cpus: 6
-    mem_limit: 12g
     networks:
       - ai
 
