@@ -49,7 +49,6 @@ def ask_ollama(user_prompt: str):
     }
 
     logger.info("Calling Ollama model=%s", PLANNER_MODEL)
-    logger.info("Modal prompt=%s", payload["prompt"])
 
     start = time.time()
 
