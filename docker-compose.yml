@@ -9,9 +9,10 @@ services:
     restart: unless-stopped
     gpus: all
     cpus: 12
-    mem_limit: 24g
+    mem_limit: 12g
     networks:
       - ai
+
   open-webui:
     image: ghcr.io/open-webui/open-webui:v0.11.0
     container_name: open-webui
@@ -26,6 +27,7 @@ services:
     restart: unless-stopped
     networks:
       - ai
+      
   comfyui:
     image: yanwk/comfyui-boot:cu126-slim
     container_name: comfyui
@@ -39,13 +41,14 @@ services:
       - ./comfy/user:/root/ComfyUI/user
       - ./comfy/workflows:/root/ComfyUI/user/default/workflows
     environment:
-      - CLI_ARGS=--listen 0.0.0.0
+      - CLI_ARGS=--listen 0.0.0.0 --lowvram --cpu-vae
     restart: unless-stopped
     gpus: all
-    cpus: 12
-    mem_limit: 24g
+    cpus: 6
+    mem_limit: 12g
     networks:
       - ai
+
   comfy-mcp:
     build:
       context: ./mcp/comfy
